@@ -12,5 +12,5 @@ PROGRAM MainProgram
     VAR
         
     END_VAR
-    ;
+    ;//1st test
 END_PROGRAM
