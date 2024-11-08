@@ -8,7 +8,7 @@ NAMESPACE Siemens.DemoMachine
         END_VAR
 
         VAR PRIVATE
-bb: BOOL ;
+           // bb: BOOL ;
         END_VAR
 
         METHOD PUBLIC ConveyorControl
