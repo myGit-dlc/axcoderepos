@@ -1,0 +1,53 @@
+# General information
+name: "mydemomachine"
+version: 1.0.1
+type: app
+keywords:
+  - library
+author: dlc
+# Description will be displayed in the apax extension
+description: <Description for your library>
+# Targets to be compiled with 'apax build'
+targets:
+  - "1500"
+  - llvm
+  - plcsim
+# Install settings
+installStrategy: strict
+apaxVersion: 3.2.1
+# Dependencies
+devDependencies:
+  "@ax/sdk": 2405.2.0
+  "@ax/ax2tia": ^9.0.0
+
+# Environment variables
+variables:
+  APAX_BUILD_ARGS:
+    - "--debug" # Generate debug information for target "1500"
+  # an arbitrary directory that can be chosen freely
+  PATH_NAME: "./bin/handover-folder"
+  # you can change the predefined output path where the TIA Portal library will be generated
+  TIA_GLOBAL_LIB_PATH: "./tiap-library"
+  # set the path to your local TIA Portal installation
+  TIA_INSTALL_PATH: "C:\\Program Files\\Siemens\\Automation\\Portal V18"
+
+scripts:
+  # transfer a AX Library to handover library documents for a TIA Libray
+  export-tia-handover-documents: ax2tia -i ./bin/1500/*.lib -o "$PATH_NAME"
+  # convert library handover documents into a global library for the TIA Portal.
+  import-handover-documents-to-tia: '"$TIA_INSTALL_PATH\\bin\\Siemens.Simatic.Lang.Library.Importer.exe" -i "$PATH_NAME" -o "$TIA_GLOBAL_LIB_PATH" -u'
+  create-tialib:
+    - apax build
+    - apax export-tia-handover-documents
+    - apax import-handover-documents-to-tia
+
+# Files, which will be shipped with the library
+files:
+  - src
+
+registries:
+  "@mygit-dlc": https://npm.pkg.github.com/
+  "@simatic-ax": https://npm.pkg.github.com
+
+#dependencies:
+# "@mygit-dlc/myaxlib": ^1.0.0
